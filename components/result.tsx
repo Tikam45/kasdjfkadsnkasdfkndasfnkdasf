@@ -45,6 +45,7 @@ export default function Result({
 
   const sortedData = useMemo(() => {
     if (!sortColumn) return data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return [...data].sort((a: any, b: any) => {
       const aVal = a[sortColumn] || "";
       const bVal = b[sortColumn] || "";
