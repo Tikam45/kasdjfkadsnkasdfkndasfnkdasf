@@ -130,3 +130,6 @@ https://drive.google.com/file/d/190hweaRKPhGGqVTD5FA8KQLpKS8j0LtB/view?usp=shari
 
 # Explanation PDF: 
 https://drive.google.com/file/d/1uc5-udWAWLTpc5VyIUqOCv6BemoWuY3c/view?usp=sharing
+
+# Dataset that we used
+https://raw.githubusercontent.com/graphql-compose/graphql-compose-examples/master/examples/northwind/data/csv/customers.csv
