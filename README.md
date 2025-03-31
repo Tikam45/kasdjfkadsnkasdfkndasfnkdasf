@@ -1,4 +1,4 @@
-Application Architecture and Data Model Explanation Overview
+# Application Architecture and Data Model Explanation Overview
 This document explains the design and structure of our multi-tab query editor application. The
 application allows users to create multiple tabs, where each tab holds its own query, query name,
 result data, and sorting/pagination settings. In addition, the application shares global state for saved
