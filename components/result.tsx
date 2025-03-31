@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import Papa from "papaparse"
+import Papa from "papaparse";
+import { saveAs } from "file-saver";
+import * as XLSX from "xlsx";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
+
 
 interface ResultProps {
   showResult: string;
@@ -43,6 +48,28 @@ export default function Result({
     });
   }, [showResult]);
 
+  const downloadCSV = () => {
+    const csv = Papa.unparse(data);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "data.csv");
+  };
+
+  const downloadExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(workbook, "data.xlsx");
+  };
+
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+    doc.text("Exported Data", 20, 10);
+    autoTable(doc, { head: [Object.keys(data[0] || {})], body: data.map(row => Object.values(row)) });
+    doc.save("data.pdf");
+  };
+
+
+
   const sortedData = useMemo(() => {
     if (!sortColumn) return data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -81,6 +108,11 @@ export default function Result({
         <p>Loading...</p>
       ) : (
         <div>
+          <div style={{marginBottom:"15px"}}>
+          <button style={{backgroundColor:"purple", marginRight:"4px", padding:"3px", borderRadius:"4px"}} onClick={downloadCSV}>Download CSV</button>
+          <button style={{backgroundColor:"purple", marginRight:"4px", padding:"3px", borderRadius:"4px"}} onClick={downloadExcel}>Download Excel</button>
+          <button style={{backgroundColor:"purple", marginRight:"4px", padding:"3px", borderRadius:"4px"}} onClick={downloadPDF}>Download PDF</button>
+          </div>
           <label htmlFor="rows">No. of Rows per page:</label>
           <input
             style={{
