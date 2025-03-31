@@ -4,7 +4,7 @@ import { Pencil, Trash, Check, X, Replace } from "lucide-react";
 import { DragDropContext, Droppable, Draggable, DroppableProvided, DropResult } from "@hello-pangea/dnd";
 import { useState } from "react";
 
-export default function ChangeQueries({
+export default function Queries({
   setQueryName,
   setQuery,
   savedQueries,
@@ -23,6 +23,7 @@ export default function ChangeQueries({
   const [newQuery, setNewQuery] = useState("");
   const [newQueryName, setNewQueryName] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -68,7 +69,7 @@ export default function ChangeQueries({
   );
 
   return (
-    <div>
+    <div style={{height:"300px", maxHeight: "300px", overflowY: "auto", border: "1px solid #ccc", padding: "5px", borderRadius: "4px" }}>
       <input
         type="text"
         placeholder="Search queries"

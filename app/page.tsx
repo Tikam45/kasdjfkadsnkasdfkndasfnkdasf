@@ -1,9 +1,10 @@
-import QueryEditor from "@/components";
+import SQLEditors from "@/components";
+
 
 export default function Home() {
   return (
     <>
-      <QueryEditor/>
+      <SQLEditors/>
     </>
   );
 }

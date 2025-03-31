@@ -1,8 +1,7 @@
-
 "use client"
-import React from "react";
+import { Clock, X } from "lucide-react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
-
 
 export default function Editor({
     query,
@@ -25,16 +24,11 @@ export default function Editor({
     setNameToQueries: React.Dispatch<React.SetStateAction<Map<string,string>>>
     setShowResult: React.Dispatch<React.SetStateAction<string>>
 }){
-    const getResult = () =>{
-        if(!query){
-            toast.error("Enter a query first");
-            return;
-        }
-        setShowResult(query);
-    }
+    const [queryHistory, setQueryHistory] = useState<string[]>([]);
+    const [showHistory, setShowHistory] = useState(false);
+
     const saveQuery = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
         e.preventDefault();
-        console.log("f", query)
         if(!query || !queryName){
             toast.error("Enter all the fields");
             return;
@@ -43,7 +37,7 @@ export default function Editor({
             toast.error("This query name already exists");
             return;
         }
-
+        
         let existingKey = "";
         for (const [key, value] of NameToQueries.entries()) {
             if (value === query) {
@@ -54,23 +48,68 @@ export default function Editor({
         if (existingKey) {
             toast.error(`This query already exists with name ${existingKey}`);
             return;
-        }
-        else{
-            console.log("e", query);
+        } else {
             setSavedQueries((prev) => [...prev, queryName]);
             setNameToQueries(new Map(NameToQueries).set(queryName, query));
         }
-    }
-    return(
-        <div style={{display: "flex", flexDirection:"column"}}>
-            <form action="" style={{display: "flex", flexDirection: "column" , gap: "5px"}}>
-                <input style={{backgroundColor: "gainsboro",border:"2px rounded", color: "black"}} value={queryName} onChange={(e) => setQueryName(e.target.value)}/>
-                <textarea style={{backgroundColor:"gray"}} value={query} onChange={(e) => setQuery(e.target.value)}/>
-            </form>
-            <div style={{display: "flex", flexDirection: "column", marginTop:"5px"}}>
-                <button style={{backgroundColor:"purple", borderRadius:"4px", marginBottom: "4px", cursor: "pointer"}}  onClick={getResult}>Run</button>
-                <button style={{backgroundColor:"green", borderRadius:"4px", cursor: "pointer"}} onClick={(e) =>saveQuery(e)}>Save this query</button>
+    };
+
+    const handleQueryExecution = () => {
+        if (!query) {
+            toast.error("Enter a query first");
+            return;
+        }
+        setShowResult(query);
+        setQueryHistory(prev => [query, ...prev.slice(0, 19)]);
+    };
+
+    return (
+        <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
+            <button style={{display: "flex", cursor:"pointer"}} onClick={() => setShowHistory(true)} >
+            <Clock size={24} cursor="pointer"style={{ marginBottom: "10px" }} />
+            <span>Show Previous Queries</span>
+            </button>
+            {showHistory && (
+                <div style={{ 
+                    position: "fixed", 
+                    top: 0, 
+                    left: 0, 
+                    width: "100%", 
+                    height: "100%", 
+                    background: "rgba(0, 0, 0, 0.5)", 
+                    display: "flex", 
+                    justifyContent: "center", 
+                    alignItems: "center",
+                    zIndex: 1000,
+                    color: "black"
+                }}>
+                    <div style={{ background: "white", padding: "20px", borderRadius: "8px", width: "400px", maxHeight: "80vh", overflowY: "auto", position: "relative" }}>
+                        <X size={24} style={{ position: "absolute", top: 10, right: 10, cursor: "pointer" }} onClick={() => setShowHistory(false)} />
+                        <h4>Query History</h4>
+                        {queryHistory.length > 0 ? (
+                            queryHistory.map((q, index) => (
+                                <div key={index} 
+                                     style={{ padding: "10px", borderBottom: "1px solid #ddd", cursor: "pointer", color:"black" }}
+                                     onClick={() => { setQuery(q); setShowHistory(false); }}>
+                                    {q}
+                                </div>
+                            ))
+                        ) : (
+                            <p>No queries executed yet.</p>
+                        )}
+                    </div>
+                </div>
+            )}
+            
+            <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                <input placeholder="Query Name" style={{ backgroundColor: "gainsboro", border: "2px solid black", color: "black" }} value={queryName} onChange={(e) => setQueryName(e.target.value)} />
+                <textarea placeholder="Query" style={{ backgroundColor: "gray" }} value={query} onChange={(e) => setQuery(e.target.value)} />
+            </div>
+            
+            <div style={{ display: "flex", flexDirection: "column", marginTop: "5px" }}>
+                <button style={{ backgroundColor: "purple", borderRadius: "4px", marginBottom: "4px", cursor: "pointer" }} onClick={handleQueryExecution}>Run</button>
+                <button style={{ backgroundColor: "green", borderRadius: "4px", cursor: "pointer" }} onClick={saveQuery}>Save this query</button>
             </div>
         </div>
-    )
+    );
 }
