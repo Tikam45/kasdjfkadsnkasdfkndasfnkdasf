@@ -1,12 +1,10 @@
 "use client";
 
 import { Pencil, Trash, Check, X, Replace } from "lucide-react";
-import { DragDropContext, Droppable, Draggable, DroppableProvided } from "@hello-pangea/dnd";
+import { DragDropContext, Droppable, Draggable, DroppableProvided, DropResult } from "@hello-pangea/dnd";
 import { useState } from "react";
 
 export default function ChangeQueries({
-  query,
-  queryName,
   setQueryName,
   setQuery,
   savedQueries,
@@ -14,8 +12,6 @@ export default function ChangeQueries({
   NameToQueries,
   setNameToQueries
 }: {
-  query: string,
-  queryName: string,
   setQueryName: React.Dispatch<React.SetStateAction<string>>
   setQuery: React.Dispatch<React.SetStateAction<string>>
   savedQueries: string[];
@@ -28,7 +24,7 @@ export default function ChangeQueries({
   const [newQueryName, setNewQueryName] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleDragEnd = (result: any) => {
+  const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
     const reorderedQueries = Array.from(savedQueries);
