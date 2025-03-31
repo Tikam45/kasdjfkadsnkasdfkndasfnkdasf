@@ -121,3 +121,12 @@ https://drive.google.com/file/d/1gief_qQCDI3NuwXf330wBREek5Ol09fM/view?usp=shari
 1. Used a Web Worker to parse the file in the background, preventing UI blocking.
 2. Imported the Result lazily to imporove performance
 3. Decreased the complexity of project by removing unncessary props transfer from parent to child
+
+# Architecture diagram
+https://drive.google.com/file/d/13FFIjDjZJzRP8xdqfgeTdOU4oVn-xlPh/view?usp=sharing
+
+# Er diagram: 
+https://drive.google.com/file/d/190hweaRKPhGGqVTD5FA8KQLpKS8j0LtB/view?usp=sharing
+
+# Explanation PDF: 
+https://drive.google.com/file/d/1uc5-udWAWLTpc5VyIUqOCv6BemoWuY3c/view?usp=sharing
